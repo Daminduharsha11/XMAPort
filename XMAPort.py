@@ -1293,16 +1293,12 @@ def one_click_port(auto=False):
         copy_partition_image("system_ext", SRC_UNPACK / "system_ext.img", pack_cfg, lpc_args, counters)
 
     # 打包目标 odm（始终运行）
-    log_write("Packing odm from target filesystem")
-    info("Packing partition: odm")
     if (TGT_FS / "odm").exists():
+        info("Packing partition: odm")
         pack_one_partition("odm", TGT_FS, pack_cfg, lpc_args, counters)
     else:
-        err("odm not found in target filesystem")
-        log_write("ERROR: odm not found in target filesystem")
-        counters["pack_fail"] += 1
-        port_failed = True
-        pause()
+        info("[skip] target has no odm partition")
+        log_write("odm not present in target, skipped")
 
     # 复制 mi_ext（源 payload）
     log_write("Copying mi_ext from source payload")
